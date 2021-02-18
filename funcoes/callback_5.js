@@ -1,46 +1,30 @@
+/**
+ * Aula 26 - Desafio
+ * Filtrar elementos frágeis, trazer preço total de cada e fazer a média total
+ */
+
 const carrinho = [
-    { nome: 'Caneta', qtde: 10, preco: 7.99, fragil: true },
-    { nome: 'Impressora', qtde: 1, preco: 649.50, fragil: true },
-    { nome: 'Caderno', qtde: 4, preco: 27.10, fragil: false },
-    { nome: 'Lápis', qtde: 3, preco: 5.82, fragil: false },
-    { nome: 'Tesoura', qtde: 1, preco: 19.20, fragil: true },
+    { name: 'Caneta', amount: 10, price: 7.99, fragile: true },
+    { name: 'Impressora', amount: 1, price: 649.50, fragile: true },
+    { name: 'Caderno', amount: 4, price: 27.10, fragile: false },
+    { name: 'Lápis', amount: 3, price: 5.82, fragile: false },
+    { name: 'Tesoura', amount: 1, price: 19.20, fragile: true },
 ];
 
-const getTotal = item => item.qtde * item.preco
+//Get total of fragile items
+const getTotalOfFragiles = carrinho.filter(item => item.fragile) //only fragile
+                                    .map( item => (item.amount * item.price)) //total price (amount * price)
 
-const total = carrinho.map(item => ({ total: getTotal(item) }))
+console.log("Total of fragiles: ")
+console.log(getTotalOfFragiles)
 
-const totalGeral = total.reduce((acc, current) => {
-    return { totalGeral: acc.totalGeral + current.total }
-}, { totalGeral: 0 })
+//Get total average
+const totalAverage = getTotalOfFragiles.reduce( (acc, item, index, array) => {
+                                let sum =  acc + item;
+                                if (index == array.length - 1)
+                                    sum = sum / array.length;
+                                return sum;
+                            })
 
-console.log("total: ", total)
-console.log("totalGeral: ", totalGeral)
-
-//1 fragil: true
-const filterFragil = carrinho.filter(item => item.fragil);
-console.log("frágeis: ", filterFragil)
-//2 qtde e preco fields
-const camposQtdEPreco = carrinho.map(item => ({ qtde: item.qtde, preco: item.preco }));
-console.log("apenas campos [qtde, preco]: ", camposQtdEPreco)
-//2.2 qtde e preco totais
-let qtdEPrecoTotal = carrinho.reduce((acc, el) => {
-    return { qtdeTotal: acc.qtdeTotal + el.qtde, precoTotal: acc.precoTotal + (el.preco * el.qtde) }
-}, { qtdeTotal: 0, precoTotal: 0 })
-console.log("quantidade e preco totais: ", qtdEPrecoTotal)
-//3 media dos totais
-let mediaTotais = camposQtdEPreco.reduce((acc, el, index, originalArray) => {
-    if (index < originalArray.length - 1)
-        return { qtdeMedia: acc.qtdeMedia + el.qtde, precoMedio: acc.precoMedio + (el.preco * el.qtde) }
-
-    return { qtdeMedia: (acc.qtdeMedia + el.qtde) / originalArray.length, precoMedio: (acc.precoMedio + (el.preco * el.qtde)) / originalArray.length }
-}, { qtdeMedia: 0, precoMedio: 0 })
-console.log("qtd e preco medio: ", mediaTotais)
-//3 segundo modo
-mediaTotais = [qtdEPrecoTotal].map(item => {
-    return {
-        qtdeMedia: (item.qtdeTotal / carrinho.length),
-            precoMedio: (item.precoTotal / carrinho.length)           
-    }
-})
-console.log("qtd e preco medio: ", mediaTotais)
+console.log("Total average: ")
+console.log(totalAverage)
