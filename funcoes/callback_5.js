@@ -13,18 +13,18 @@ const carrinho = [
 
 //Get total of fragile items
 const getTotalOfFragiles = carrinho.filter(item => item.fragile) //only fragile
-                                    .map( item => (item.amount * item.price)) //total price (amount * price)
+    .map(item => (item.amount * item.price)) //total price (amount * price)
 
 console.log("Total of fragiles: ")
 console.log(getTotalOfFragiles)
 
 //Get total average
-const totalAverage = getTotalOfFragiles.reduce( (acc, item, index, array) => {
-                                let sum =  acc + item
-                                if (index == array.length - 1)
-                                    sum = sum / array.length
-                                return sum
-                            })
+const totalAverage = getTotalOfFragiles.reduce((acc, item, index, array) => {
+    let sum = acc + item
+    if (index == array.length - 1)
+        sum = sum / array.length
+    return sum
+})
 
 console.log("Total average: ", totalAverage)
 
@@ -33,39 +33,34 @@ console.log("Total average: ", totalAverage)
  * Criar o próprio reduce
  */
 
- Array.prototype.customReduce =  function (fn, ini) {
-    
+Array.prototype.customReduce = function (fn, ini) {
+
     let acc = this[0]
     let initialIndex = 1
 
     if (ini) {
-        acc = ini  
+        acc = ini
         initialIndex--
     }
 
-    for(let i = initialIndex; i < this.length; i++){
+    for (let i = initialIndex; i < this.length; i++) {
         acc = fn(acc, this[i], i, this)
     }
 
     return acc
- }
+}
 
- //Test custom reduce
+//Test custom reduce
 
- const totalAverageCustomReduce = getTotalOfFragiles.customReduce( (acc, item, index, array) => {
-    console.log("i: ", index)
-    console.log("acc: ", acc)
-    console.log("item: ", item)
-    console.log("array length: ", array.length)
-    console.log("-------------------")
-    let sum =  acc + item
+const totalAverageCustomReduce = getTotalOfFragiles.customReduce((acc, item, index, array) => {
+    let sum = acc + item
     if (index == array.length - 1)
         sum = sum / array.length
     return sum
 })
- console.log("Total average with custom reduce: ", totalAverageCustomReduce)
+console.log("Total average with custom reduce: ", totalAverageCustomReduce)
 
- //Test 2, sum passing initial value
+//Test 2, sum passing initial value
 
 const numberArray = [1, 2, 3, 4, 5]
 
